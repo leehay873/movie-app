@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <input id="search" type="text" placeholder="Search any Show">
+    <div id="main"></div>
+
+
+    <script>
+        const API_URL = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=be12910da2f9b8c1e5c95ac22f8e1209&page=10'
+       const IMG_PATH = 'https://image.tmdb.org/t/p/w1280'
+
+let movie= document.getElementById('search')
+movie.addEventListener('keypress', (event) => {
+    if(event.keyCode === 13){
+        console.log(movie.value)
+        searchinput(movie.value)
+    }
+})
+
+
+        function getShow() {
+            fetch(API_URL).then((res) => res.json()).then(data => {
+                console.log(data)
+                let html = ""
+                data.results.forEach(element => {
+                    console.log(element)
+                    html += `<div>${element.original_title}
+                        <img height="350px" width="300" src=${IMG_PATH}${element.poster_path}/>
+                        </div>`
+            
+                });
+                document.getElementById('main').innerHTML = html
+            })
+        }
+    
+        getShow()
+
+        function searchinput(movie) {
+
+            fetch(`https://api.themoviedb.org/3/search/movie?api_key=be12910da2f9b8c1e5c95ac22f8e1209&query=${movie}`).then((res) => res.json()).then(data => {
+                console.log(data)
+                let html = ""
+                data.results.forEach(element => {
+                    console.log(element)
+                    html += `<div>${element.original_title}
+                        <img height="350px" width="300" src=${IMG_PATH}${element.poster_path}/>
+                        </div>`
+            
+                });
+                document.getElementById('main').innerHTML = html
+            })
+            
+        }
+
+
+
+    </script>
+
+</body>
+</html>
